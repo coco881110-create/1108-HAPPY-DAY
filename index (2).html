@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Happy Birthday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=LXGW+Marker+Gothic&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff7f3;--o:#ff5a36;--b:#3535e6}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg)}
+body{display:grid;place-items:center;overflow:hidden}
+#stage{position:relative;aspect-ratio:1135/1600;width:min(100vw,calc(100vh * .709));container-type:inline-size}
+#stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+svg *{transform-box:view-box}
+.b,.o{fill:none;stroke:var(--b);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.o{stroke:var(--o)}
+.fo{fill:var(--o)}
+.script{font-family:"Caveat","LXGW Marker Gothic","Segoe Print","Bradley Hand","Comic Sans MS","Noto Sans TC","PingFang TC","Microsoft JhengHei",cursive;fill:var(--b)}
+
+/* 點擊提示圈 */
+#hit{fill:transparent;cursor:pointer;outline:none}
+.ping{fill:none;stroke:var(--o);stroke-width:5;transform-origin:565px 905px;animation:ping 1.8s ease-out infinite}
+.ping+.ping{animation-delay:.9s}
+@keyframes ping{0%{transform:scale(.35);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+
+/* 活動資訊（位於 Happy Birthday 與貓咪之間） */
+#info{position:absolute;left:12%;right:12%;top:33%;height:29%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2.2cqw;text-align:center;color:var(--b);font-family:"LXGW Marker Gothic","PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;font-size:4.5cqw;line-height:1.4;letter-spacing:.04em;pointer-events:none}
+#info .big{font-size:7.8cqw;font-weight:400;transform:rotate(-2deg)}
+#info .row{opacity:0}
+#info .row:nth-child(2){padding-top:2.2cqw;border-top:.5cqw solid var(--o);width:46%}
+
+/* 動畫時間軸：點擊後在 #stage 加上 .go */
+.go #ping{display:none}
+.go #tip{animation:fadeOut .5s .1s forwards}
+.go #bowTL{animation:untie 1.5s ease-in forwards;transform-origin:170px 228px}
+.go #bowBR{animation:untie 1.5s .2s ease-in forwards;transform-origin:925px 1390px}
+.go #balloons{animation:rise 3.4s 1.3s cubic-bezier(.45,0,.9,.6) forwards}
+.go #catg{animation:fall 1.2s 1.6s forwards}
+.go #horn{transform-origin:418px 917px;animation:blow .6s 2.9s ease-in-out infinite alternate}
+.go #info .row{animation:fadeIn 1.1s calc(3.2s + var(--i)*.9s) forwards}
+@keyframes fadeIn{to{opacity:1}}
+@keyframes fadeOut{to{opacity:0}}
+@keyframes untie{25%{transform:rotate(-10deg) scale(1.06)}55%{transform:rotate(12deg) scale(.85,.6)}100%{transform:rotate(38deg) translateY(160px) scale(.5,.2);opacity:0}}
+@keyframes rise{100%{transform:translate(30px,-1900px)}}
+@keyframes fall{0%{transform:translateY(0)}55%{transform:translateY(290px)}70%{transform:translateY(262px)}85%{transform:translateY(290px)}93%{transform:translateY(282px)}100%{transform:translateY(290px)}}
+@keyframes blow{from{transform:scaleX(.8)}to{transform:scaleX(1.4)}}
+@media (prefers-reduced-motion:reduce){.go *{animation-duration:.01s!important;animation-delay:0s!important}}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg viewBox="0 0 1135 1600" role="img" aria-label="生日卡片">
+  <defs><path id="fp" d="M190 195C400 150 600 230 800 195C900 175 980 200 990 280C1010 420 950 520 985 700C1015 850 960 980 1000 1120C1025 1230 990 1300 1010 1400C1000 1460 900 1440 760 1480C600 1510 450 1430 300 1465C200 1490 140 1450 115 1410C90 1300 110 1200 80 1050C55 900 110 800 80 650C55 500 105 420 85 330C80 280 100 250 130 230Z"/></defs>
+
+  <!-- 每個圖層：.fb 是內建向量備用圖；data-img 有對應 PNG 時自動蓋過去 -->
+  <g id="frame" data-img="frame.png"><g class="fb">
+    <use href="#fp" class="o" style="stroke-width:16"/><use href="#fp" style="fill:none;stroke:var(--bg);stroke-width:6"/></g></g>
+
+  <g id="bowTL" data-img="bow-tl.png"><g class="fb o">
+    <path d="M170 228C130 190 140 120 180 122C220 125 210 190 170 228Z"/><path d="M170 228C120 215 60 215 52 250C48 285 120 275 170 228Z"/>
+    <path d="M170 228C160 270 140 320 140 352L165 350M170 228C210 218 250 225 275 232"/></g></g>
+
+  <g id="bowBR" data-img="bow-br.png"><g class="fb o">
+    <path d="M925 1390C950 1320 1040 1280 1065 1320C1075 1360 990 1400 925 1390Z"/><path d="M925 1390C880 1430 870 1520 905 1540C945 1545 950 1450 925 1390Z"/>
+    <path d="M925 1390C920 1330 935 1190 955 1135C970 1180 940 1230 960 1290M925 1390C860 1420 800 1450 710 1495"/></g></g>
+
+  <g id="banner" data-img="banner.png"><g class="fb">
+    <path class="b" d="M285 450L318 400L280 383C500 290 700 265 790 292L770 320L855 378C780 385 720 380 680 385C560 380 420 400 285 450Z"/>
+    <text class="script" transform="rotate(-5 570 360)" x="345" y="395" font-size="58" font-weight="700" textLength="415">HAPPY BIRTHDAY</text></g></g>
+
+  <g id="balloons" data-img="balloons.png"><g class="fb">
+    <ellipse class="o" cx="510" cy="555" rx="70" ry="85"/><ellipse class="o" cx="615" cy="600" rx="68" ry="88"/>
+    <path class="b" d="M495 640C520 700 590 740 600 790M600 690C590 720 600 760 600 790M600 790C610 830 605 860 600 890"/></g></g>
+
+  <g id="catg">
+    <g id="cat" data-img="cat.png"><g class="fb">
+      <g class="b">
+        <path d="M345 830C338 870 348 910 385 928C425 945 490 940 515 905C528 870 510 830 462 797C455 808 448 815 440 820C410 812 375 815 358 822Z"/>
+        <ellipse cx="390" cy="888" rx="10" ry="8"/><ellipse cx="450" cy="885" rx="10" ry="8"/>
+        <path d="M420 900L422 914C414 922 406 920 402 914M325 908q10-10 20 0t20 0t20 0M455 908q10-8 20 0t20 0t20 0"/>
+        <path d="M490 805C540 765 620 755 690 775C730 785 725 840 722 870C745 960 790 1010 775 1040C760 1050 735 1040 728 1000M722 868C770 868 830 848 845 800C850 785 830 778 812 790"/>
+        <path d="M640 890C630 960 625 1020 622 1050C640 1060 665 1055 662 1030M410 945C400 990 380 1040 365 1072L400 1076M445 950L445 1078L490 1078M575 890C550 960 520 1030 497 1078"/>
+        <path d="M377 765L374 751M377 765L385 753"/></g>
+      <path class="fo" d="M378 765L440 835C415 845 385 840 368 830Z"/>
+      <path d="M385 788L418 802M376 808L430 824" stroke="var(--bg)" stroke-width="8" stroke-linecap="round"/>
+      <path class="fo" d="M455 960L420 950L418 975ZM455 960L488 950L490 970Z" stroke="var(--o)" stroke-width="4" stroke-linejoin="round"/></g></g>
+    <g id="horn" data-img="horn.png"><g class="fb o"><path d="M418 912L340 925M418 922L345 950"/><circle cx="320" cy="940" r="22"/><circle cx="320" cy="940" r="9"/></g></g>
+    <ellipse id="hit" cx="565" cy="905" rx="150" ry="120" tabindex="0" role="button" aria-label="點擊貓咪"/>
+  </g>
+
+  <g id="tip" data-img="tip.png"><g class="fb"><text class="script" font-size="50" font-weight="700" text-anchor="middle" transform="rotate(-6 567 1250)">
+    <tspan x="567" y="1215">Another year,</tspan><tspan x="567" y="1270">another excuse to</tspan><tspan x="567" y="1325">eat cake!</tspan></text></g></g>
+
+  <g id="ping"><circle class="ping" cx="565" cy="905" r="80"/><circle class="ping" cx="565" cy="905" r="80"/></g>
+  <g id="confetti"></g>
+</svg>
+<div id="info"></div>
+</div>
+
+<script>
+/* ===== 可修改設定 ===== */
+const IMG = 'img/';        // 去背 PNG 所在資料夾（找不到圖時自動使用內建向量圖）
+const MUSIC_FILE = '';     // 想用自己的音樂就填 'music/birthday.mp3'；留空則用內建合成旋律
+const INFO = {
+  title: '小明的生日派對',
+  rows: ['2026 / 11 / 21（六）', '18:00 – 21:00', '台北市信義區○○路 88 號 3F', '請於 11/14 前回覆']
+};
+/* ===================== */
+
+const NS = 'http://www.w3.org/2000/svg';
+const stage = document.getElementById('stage');
+
+// 圖層：每張 PNG 都是 1135×1600 的全畫布透明圖，位置不用另外調
+document.querySelectorAll('[data-img]').forEach(g => {
+  const im = document.createElementNS(NS, 'image');
+  im.setAttribute('href', IMG + g.dataset.img);
+  im.setAttribute('width', 1135); im.setAttribute('height', 1600);
+  im.onload = () => { const fb = g.querySelector('.fb'); if (fb) fb.style.display = 'none'; };
+  im.onerror = () => im.remove();
+  g.append(im);
+});
+
+// 活動資訊
+const info = document.getElementById('info');
+[INFO.title, ...INFO.rows].forEach((t, i) => {
+  const d = document.createElement('div');
+  d.className = 'row' + (i === 0 ? ' big' : '');
+  d.style.setProperty('--i', i); d.textContent = t; info.append(d);
+});
+
+// 內建「生日快樂」旋律（Web Audio，不需音檔）
+function playMusic() {
+  if (MUSIC_FILE) { new Audio(MUSIC_FILE).play().catch(() => {}); return; }
+  const C = new (window.AudioContext || window.webkitAudioContext)();
+  const m = [[392,.75],[392,.25],[440,1],[392,1],[523,1],[494,2],[392,.75],[392,.25],[440,1],[392,1],[587,1],[523,2],
+             [392,.75],[392,.25],[784,1],[659,1],[523,1],[494,1],[440,1],[698,.75],[698,.25],[659,1],[523,1],[587,1],[523,2]];
+  let t = C.currentTime + .05; const beat = .42;
+  m.forEach(([f, d]) => {
+    const o = C.createOscillator(), g = C.createGain();
+    o.type = 'triangle'; o.frequency.value = f; o.connect(g); g.connect(C.destination);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.25, t + .02);
+    g.gain.exponentialRampToValueAtTime(.001, t + d * beat * .95);
+    o.start(t); o.stop(t + d * beat); t += d * beat;
+  });
+}
+
+// 喇叭噴出的彩紙
+function burst() {
+  const box = document.getElementById('confetti');
+  for (let i = 0; i < 26; i++) {
+    const c = document.createElementNS(NS, 'rect');
+    c.setAttribute('x', 300); c.setAttribute('y', 1228);
+    c.setAttribute('width', 14); c.setAttribute('height', 8);
+    c.setAttribute('fill', i % 2 ? '#ff5a36' : '#3535e6'); box.append(c);
+    const dx = -250 - Math.random() * 250, dy = -150 - Math.random() * 450;
+    c.animate([{ transform: 'translate(0,0) rotate(0)', opacity: 1 },
+               { transform: `translate(${dx}px,${dy}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }],
+              { duration: 1400 + Math.random() * 700, easing: 'ease-out' }).onfinish = () => c.remove();
+  }
+}
+
+let started = false;
+function start() {
+  if (started) return; started = true;
+  stage.classList.add('go');
+  document.getElementById('hit').style.pointerEvents = 'none';
+  playMusic();
+  [2900, 4100, 5300].forEach(ms => setTimeout(burst, ms));
+}
+const hit = document.getElementById('hit');
+hit.addEventListener('click', start);
+hit.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') start(); });
+</script>
+</body>
+</html>
