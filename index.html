@@ -30,7 +30,12 @@ svg *{transform-box:view-box}
 #info{position:absolute;left:12%;right:12%;top:33%;height:29%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2.2cqw;text-align:center;color:var(--b);font-family:"LXGW Marker Gothic","PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;font-size:4cqw;line-height:1.4;letter-spacing:.04em;pointer-events:none}
 #info .big{font-size:7.8cqw;font-weight:400;transform:rotate(-2deg)}
 #info .row{opacity:0}
+#info a{color:var(--b);text-decoration:underline;text-decoration-color:var(--o);text-decoration-thickness:.5cqw;text-underline-offset:.8cqw;pointer-events:none}
+.go #info a{pointer-events:auto}
 #info .row:nth-child(2){padding-top:2.2cqw;border-top:.5cqw solid var(--o);width:60%}
+
+#hint{position:absolute;left:0;right:0;bottom:.8%;text-align:center;color:var(--b);opacity:.75;font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;font-size:3.2cqw;letter-spacing:.06em;pointer-events:none}
+.go #hint{animation:fadeOut .5s forwards}
 
 /* 動畫時間軸：點擊後在 #stage 加上 .go */
 .go #ping{display:none}
@@ -98,15 +103,18 @@ svg *{transform-box:view-box}
   <g id="confetti"></g>
 </svg>
 <div id="info"></div>
+<div id="hint">🔊 請開啟聲音，再點一下貓咪</div>
 </div>
 
 <script>
 /* ===== 可修改設定 ===== */
 const IMG = 'img/';        // 去背 PNG 所在資料夾（找不到圖時自動使用內建向量圖）
-const MUSIC_FILE = '';     // 想用自己的音樂就填 'music/birthday.mp3'；留空則用內建合成旋律
+const MUSIC_FILE = 'music/birthday.mp3';  // 找不到檔案或播放失敗時，自動改用內建合成旋律
 const INFO = {
   title: '可可的生日聚會',
-  rows: ['2026 / 11 / 8（日）', '13:00 – 18:00', '地點：離近於大安捷運站', '請於 10/31 前回覆']
+  rows: ['2026 / 11 / 8（日）', '13:00 – 18:00',
+    { text: '地點：', link: '日日間', href: 'https://www.google.com/maps/dir//%E6%97%A5%E6%97%A5%E9%96%93+%E5%A4%9A%E5%8A%9F%E8%83%BD%E7%A9%BA%E9%96%93%E7%A7%9F%E5%80%9F+106%E8%87%BA%E5%8C%97%E5%B8%82%E5%A4%A7%E5%AE%89%E5%8D%80%E5%92%8C%E5%AE%89%E9%87%8C%E4%BF%A1%E7%BE%A9%E8%B7%AF%E4%B8%89%E6%AE%B5147%E5%B7%B711%E5%BC%846%E4%B9%8B1%E8%99%9F1%E6%A8%93/@25.1409054,121.3912368,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3442abf2dec5276d:0x6562b0019df1e8e!2m2!1d121.5423795!2d25.0346754?entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D' },
+    '請於 10/31 前回覆']
 };
 /* ===================== */
 
@@ -128,13 +136,29 @@ const info = document.getElementById('info');
 [INFO.title, ...INFO.rows].forEach((t, i) => {
   const d = document.createElement('div');
   d.className = 'row' + (i === 0 ? ' big' : '');
-  d.style.setProperty('--i', i); d.textContent = t; info.append(d);
+  d.style.setProperty('--i', i);
+  if (typeof t === 'object') {
+    d.append(t.text);
+    const a = document.createElement('a');
+    a.href = t.href; a.textContent = t.link; a.target = '_blank'; a.rel = 'noopener';
+    d.append(a);
+  } else d.textContent = t;
+  info.append(d);
 });
 
 // 內建「生日快樂」旋律（Web Audio，不需音檔）
 function playMusic() {
-  if (MUSIC_FILE) { new Audio(MUSIC_FILE).play().catch(() => {}); return; }
+  try { navigator.audioSession.type = 'playback'; } catch (e) {}   // iOS 16.4+：不受靜音撥桿影響
+  if (!MUSIC_FILE) return synth();
+  let fell = false;
+  const fallback = () => { if (!fell) { fell = true; synth(); } };
+  const a = new Audio(MUSIC_FILE);
+  a.addEventListener('error', fallback);
+  a.play().catch(fallback);
+}
+function synth() {
   const C = new (window.AudioContext || window.webkitAudioContext)();
+  C.resume();
   const m = [[392,.75],[392,.25],[440,1],[392,1],[523,1],[494,2],[392,.75],[392,.25],[440,1],[392,1],[587,1],[523,2],
              [392,.75],[392,.25],[784,1],[659,1],[523,1],[494,1],[440,1],[698,.75],[698,.25],[659,1],[523,1],[587,1],[523,2]];
   let t = C.currentTime + .05; const beat = .42;
